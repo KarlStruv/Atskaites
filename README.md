@@ -17,7 +17,7 @@
    ```bash
    cd C:\xampp\htdocs
    git clone https://github.com/KarlStruv/Atskaites.git
-   cd kpdc_atskaites
+   cd atskaites-main
    ```
 3. **Install Dependencies**
    ```bash
