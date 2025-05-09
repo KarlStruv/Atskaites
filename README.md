@@ -16,7 +16,7 @@
 2. **Clone Repository**
    ```bash
    cd C:\xampp\htdocs
-   git clone https://github.com/karlstruv/timbertrack.git
+   git clone https://github.com/KarlStruv/Atskaites.git
    cd kpdc_atskaites
    ```
 3. **Install Dependencies**
