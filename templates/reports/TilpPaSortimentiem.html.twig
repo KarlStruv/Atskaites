@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Tilpums pa Sortimentiem</h1>
+
+    <table id="tilpPaSortimentiemTable" class="display" style="width:100%">
+        <thead>
+        <tr>
+            <th>Sortiments</th>
+            <th>Bruto</th>
+            <th>Neto</th>
+            <th>Brāķis</th>
+        </tr>
+        </thead>
+    </table>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/tilpPaSortimentiem.js') }}"></script>
+{% endblock %}

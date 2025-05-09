@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Kopējais Uzmērītais Tilpums</h1>
+
+    <table id="kopUzmTilpumsTable" class="display" style="width:100%">
+        <thead>
+        <tr>
+            <th>Veids</th>
+            <th>Bruto</th>
+            <th>Neto</th>
+            <th>Brāķis</th>
+        </tr>
+        </thead>
+    </table>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/uzmTilpums.js') }}"></script>
+{% endblock %}

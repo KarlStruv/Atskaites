@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Atskaišu Sistēma{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('vendor/datatables/datatables.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/report.css') }}">
+    {% endblock %}
+</head>
+<body>
+<header class="header">
+    <div class="container header-content">
+        <h1 class="logo">Koksnes Atskaites</h1>
+        <nav class="nav">
+            <a href="{{ path('registrs') }}">Reģistrs</a>
+            <a href="{{ path('kop_uzm_tilpums') }}">Kopējais Uzmērītais Tilpums</a>
+            <a href="{{ path('tilp_pa_sortimentiem') }}">Tilpums pa Sortimentiem</a>
+            <a href="{{ path('uzm_balku_skaits') }}">Uzmērīto Baļķu Skaits pa Datumiem un Vietām</a>
+        </nav>
+    </div>
+</header>
+
+<main class="main-content container">
+    {% block body %}{% endblock %}
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <p>&copy; {{ "now"|date("Y") }} Koksnes Atskaites Platforma. Visas tiesības aizsargātas.</p>
+    </div>
+</footer>
+
+{% block javascripts %}
+    <script src="{{ asset('vendor/jquery/jquery-3.7.1.min.js') }}"></script>
+    <script src="{{ asset('vendor/datatables/datatables.min.js') }}"></script>
+{% endblock %}
+</body>
+</html>

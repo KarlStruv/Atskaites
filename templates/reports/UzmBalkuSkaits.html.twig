@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Uzmērīto Baļķu Skaits</h1>
+
+    <div class="filter-block">
+        <div class="filter-group">
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" name="startDate">
+
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate" name="endDate">
+
+
+
+            <div class="filter-actions">
+                <button id="filterButton">Filtrēt</button>
+            </div>
+        </div>
+        <div id="dateError" class="error-message"></div>
+    </div>
+
+    <table id="uzmBalkuSkaitsTable" class="display" style="width:100%">
+        <thead>
+        <tr>
+            <th>Datums</th>
+            <th>Vieta</th>
+            <th>Skaits</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/uzmBalkuSkaits.js') }}"></script>
+{% endblock %}
