@@ -90,39 +90,20 @@ class KpdcRegistrsRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('k')
             ->select('kri.datumsUzm AS datums', 'k.vietaNosaukums AS vieta', 'COUNT(kri.id) AS skaits')
             ->innerJoin('k.kpdcRegistrsInd', 'kri', 'WITH', 'kri.registrs = k.id')
-            ->groupBy('datums', 'vieta')
-            ->orderBy('datums', 'ASC')
-            ->addOrderBy('vieta', 'ASC');
+            ->groupBy('kri.datumsUzm', 'k.vietaNosaukums')
+            ->orderBy('kri.datumsUzm', 'ASC')
+            ->addOrderBy('k.vietaNosaukums', 'ASC');
 
         if ($startDate) {
-            $qb->andWhere('datums >= :startDate')
-                ->setParameter('startDate', $startDate);
+            $qb->andWhere('kri.datumsUzm >= :startDate')
+                ->setParameter('startDate', Carbon::createFromFormat('Y-m-d', $startDate)->startOfDay()->format('Y-m-d H:i:s'));
         }
 
         if ($endDate) {
-            $qb->andWhere('datums <= :endDate')
-                ->setParameter('endDate', $endDate);
+            $qb->andWhere('kri.datumsUzm <= :endDate')
+                ->setParameter('endDate', Carbon::createFromFormat('Y-m-d', $endDate)->endOfDay()->format('Y-m-d H:i:s'));
         }
 
-        $results = $qb->getQuery()->getArrayResult();
-
-        $groupedResults = [];
-        foreach ($results as $result) {
-            $date = Carbon::parse($result['datums'])->toDateString();
-            $vieta = $result['vieta'];
-            $key = "$date|$vieta";
-
-            $groupedResults[$key] ??= [
-                'datums' => $date,
-                'vieta' => $vieta,
-                'skaits' => 0,
-            ];
-            $groupedResults[$key]['skaits'] += (int)$result['skaits'];
-        }
-
-        $finalResults = array_values($groupedResults);
-        usort($finalResults, fn($a, $b) => ($a['datums'] <=> $b['datums']) ?: ($a['vieta'] <=> $b['vieta']));
-
-        return $finalResults;
+        return $qb->getQuery()->getArrayResult();
     }
 }

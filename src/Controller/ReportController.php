@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\DTO\BalkuSkaitsFilterDto;
-use App\DTO\FilterParamsDto;
+use App\DTO\FilterParamsDTO;
 use App\Service\KpdcRegistrsService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -30,7 +29,7 @@ class ReportController extends AbstractController
     #[Route('registrs/data', name: 'registrs_data', methods: ['GET'])]
     public function data(Request $request): JsonResponse
     {
-        $params = FilterParamsDto::fromRequest($request);
+        $params = FilterParamsDTO::fromRequest($request);
         $response = $this->service->getFilteredData($params);
 
         return $this->json($response);
@@ -39,7 +38,7 @@ class ReportController extends AbstractController
     #[Route('registrs/export', name: 'report_registrs_export', methods: ['GET'])]
     public function export(Request $request): Response
     {
-        $params = FilterParamsDto::fromRequest($request);
+        $params = FilterParamsDTO::fromRequest($request);
         $filePath = $this->service->exportToExcel($params);
 
         return $this->file($filePath, 'KpdcRegistrs.xlsx');
@@ -84,9 +83,12 @@ class ReportController extends AbstractController
     #[Route('uzmerito-balku-skaits/data', name: 'uzm_balku_skaits_data', methods: ['GET'])]
     public function uzmBalkuSkaitsData(Request $request): JsonResponse
     {
-        $filters = BalkuSkaitsFilterDto::fromRequest($request);
-        $response = $this->service->getLocationDataWithFilters($filters);
+        $startDate = $request->query->get('startDate');
+        $endDate = $request->query->get('endDate');
+        $data = $this->service->getGroupedLocationData($startDate, $endDate);
 
-        return $this->json($response);
+        return $this->json([
+            'data' => $data,
+        ]);
     }
 }

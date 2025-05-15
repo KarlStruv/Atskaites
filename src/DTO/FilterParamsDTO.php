@@ -6,7 +6,7 @@ namespace App\DTO;
 
 use Symfony\Component\HttpFoundation\Request;
 
-final readonly class FilterParamsDto
+final readonly class FilterParamsDTO
 {
     public function __construct(
         public int    $start = 0,

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\DTO\BalkuSkaitsFilterDto;
-use App\DTO\FilterParamsDto;
+use App\DTO\FilterParamsDTO;
 use App\Repository\KpdcRegistrsGrupRepository;
 use App\Repository\KpdcRegistrsRepository;
+use Carbon\Carbon;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -16,10 +16,11 @@ final readonly class KpdcRegistrsService
     public function __construct(
         private KpdcRegistrsRepository     $registrsRepository,
         private KpdcRegistrsGrupRepository $grupRepository
-    ) {
+    )
+    {
     }
 
-    public function getFilteredData(FilterParamsDto $params): array
+    public function getFilteredData(FilterParamsDTO $params): array
     {
         $data = $this->registrsRepository->getFilteredData(
             $params->start,
@@ -41,7 +42,7 @@ final readonly class KpdcRegistrsService
         ];
     }
 
-    public function exportToExcel(FilterParamsDto $params): string
+    public function exportToExcel(FilterParamsDTO $params): string
     {
         $records = $this->registrsRepository->getFilteredData(
             null,
@@ -97,21 +98,31 @@ final readonly class KpdcRegistrsService
         ];
     }
 
-    public function getLocationDataWithFilters(?BalkuSkaitsFilterDto $filters = null): array
+    public function getGroupedLocationData(?string $startDate = null, ?string $endDate = null): array
     {
-        $startDate = $filters?->startDate;
-        $endDate = $filters?->endDate;
-        $draw = $filters?->draw ?? 1;
+        $results = $this->registrsRepository->getLocationDataWithFilters($startDate, $endDate);
+        $grouped = [];
 
-        $data = $this->registrsRepository->getLocationDataWithFilters($startDate, $endDate);
+        foreach ($results as $row) {
+            $date = Carbon::parse($row['datums'])->toDateString();
+            $vieta = trim($row['vieta']);
+            $key = "$date|$vieta";
 
-        return $filters
-            ? [
-                'draw' => $draw,
-                'recordsTotal' => count($data),
-                'recordsFiltered' => count($data),
-                'data' => $data,
-            ]
-            : $data;
+            if (!isset($grouped[$key])) {
+                $grouped[$key] = [
+                    'datums' => $date,
+                    'vieta' => $vieta,
+                    'skaits' => 0,
+                ];
+            }
+
+            $grouped[$key]['skaits'] += (int)$row['skaits'];
+        }
+
+        $finalResults = array_values($grouped);
+
+        usort($finalResults, fn($a, $b) => ($a['datums'] <=> $b['datums']) ?: strcmp($a['vieta'], $b['vieta']));
+
+        return $finalResults;
     }
 }
