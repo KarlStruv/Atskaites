@@ -44,9 +44,9 @@
 7. **Run and access the Project** 
     - Run in terminal:
     ```bash
-    - php -S localhost:8000 -t public
+    php -S localhost:8000 -t public
     ```
     - Access the project in a modern Web Browser(Chrome, Firefox, etc.):
     ```bash
-    - http://localhost:8000/
+    http://localhost:8000/
     ```
