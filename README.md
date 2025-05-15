@@ -16,8 +16,8 @@
 2. **Clone Repository**
    ```bash
    cd C:\xampp\htdocs
-   git clone https://github.com/karlstruv/timbertrack.git
-   cd kpdc_atskaites
+   git clone https://github.com/KarlStruv/Atskaites.git
+   cd atskaites-main
    ```
 3. **Install Dependencies**
    ```bash
@@ -44,9 +44,9 @@
 7. **Run and access the Project** 
     - Run in terminal:
     ```bash
-    - php -S localhost:8000 -t public
+    php -S localhost:8000 -t public
     ```
     - Access the project in a modern Web Browser(Chrome, Firefox, etc.):
     ```bash
-    - http://localhost:8000/
+    http://localhost:8000/
     ```
